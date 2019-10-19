@@ -6,6 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>fiszk-o-mat</title>
   <script>
+    function download(filename, text) {
+      // https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
     function convert() {
       var s = document.getElementById('text').value;
       if(document.getElementById('replace').checked)
@@ -14,14 +24,22 @@
       s = s.replace('  ','   ->   ');
       s = s.replace('\r\n', '\n');
       s += '\n';
+      var name = document.getElementById('name').value;
+      if(name.indexOf('.') == -1)
+        name += '.txt';
+      download(name, s);
     }
   </script>
+  <style>
+    br{line-height: 200%;}
+  </style>
 </head>
 <body>
   <form action="javascript:convert()">
     <p>Type your flashcards in this way: "mothers  die M\utter". After each flashcard, make the end of line and separate the phrase from the word by two spaces.</p>
-    <textarea id="text" cols="100" rows="50"></textarea><br>
+    <textarea id="text" cols="50" rows="30"></textarea><br>
     <input type="checkbox" id="replace"><label for="replace">Replace "\a", "\U", "\B" with "&auml;", "&Uuml;", "&szlig;"</label><br>
+    <input type="text" id="name" value="fiszki.txt">
     <input type="submit" id="convert" value="Get my fiszki!">
   </form>
 </body>
