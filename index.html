@@ -6,6 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>fiszk-o-mat</title>
   <script>
+    String.prototype.replaceAll = function(search, replacement) {
+      // https://stackoverflow.com/a/17606289/6732111
+      var target = this;
+      return target.replace(new RegExp(search, 'g'), replacement);
+    };
     function download(filename, text) {
       // https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
       var element = document.createElement('a');
@@ -19,10 +24,10 @@
     function convert() {
       var s = document.getElementById('text').value;
       if(document.getElementById('replace').checked)
-        s = s.replace('\\a', 'ä').replace('\\A', 'Ä').replace('\\u', 'ü').replace('\\U', 'Ü').replace('\\o', 'ö').replace('\\O', 'Ö').replace('\\B', 'ß');
+        s = s.replaceAll('\\a', 'ä').replaceAll('\\A', 'Ä').replaceAll('\\u', 'ü').replaceAll('\\U', 'Ü').replaceAll('\\o', 'ö').replaceAll('\\O', 'Ö').replaceAll('\\B', 'ß');
       document.getElementById('text').value = s;
-      s = s.replace('  ','   ->   ');
-      s = s.replace('\r\n', '\n');
+      s = s.replaceAll('  ','   ->   ');
+      s = s.replaceAll('\r\n', '\n');
       s += '\n';
       var name = document.getElementById('name').value;
       if(name.indexOf('.') == -1)
